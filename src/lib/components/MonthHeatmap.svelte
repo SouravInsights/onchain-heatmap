@@ -11,8 +11,6 @@
   
   // Define color-coding logic
   function getColor(level: string): string {
-    // Implement your color-coding logic based on the contribution level
-    // Example:
     if (level === 'low') {
       return 'lightblue';
     } else if (level === 'medium') {
@@ -25,30 +23,33 @@
 
   // Function to get the contribution level for a given date
   function getContributionLevel(date: Date): string {
+    if (!date) return 'none'; // Check if date is undefined
     const dateString = date.toISOString().split('T')[0];
-    const contribution = contributions.find((c: Contribution) => c.date === dateString);
+    const contribution = contributions.find(c => c.date === dateString);
     return contribution ? contribution.level : 'none';
-  }
+}
 
   // Function to get the name of the month
   function getMonthName(monthDate: Date): string {
-    return monthDate.toLocaleString('default', { month: 'long' });
+    return monthDate.toLocaleString('default', { month: 'short' });
+  }
+
+  // Define function to get the index of the first day of the month
+  function getFirstDayIndex(): number {
+    return monthDates[0].getDay(); // Get the day of the week for the first day of the month
   }
 </script>
 
 <style>
   /* Define heatmap styles */
-  .heatmap {
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
 
-  .week-label,
+
   .heatmap-cell {
-    width: 20px;
-    height: 20px;
     text-align: center;
     border: 1px solid #ccc;
+    width: 30px; /* Same as grid-template-columns width */
+    height: 30px; /* Same as grid-template-rows height */
+    aspect-ratio: 1 / 1; /* Ensure aspect ratio is 1:1 for perfect squares */
   }
 
   .week-label {
@@ -59,19 +60,25 @@
 <div>
   <h2>{getMonthName(monthDates[0])}</h2>
   <table class="heatmap">
-    <thead>
+    <!-- <thead>
       <tr>
-        {#each ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as day}
+        {#each ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as day}
           <th class="week-label">{day}</th>
         {/each}
       </tr>
-    </thead>
+    </thead> -->
     <tbody>
-      <tr>
-        {#each monthDates as date}
-          <td class="heatmap-cell" style="background-color: {getColor(getContributionLevel(date))};"></td>
-        {/each}
-      </tr>
+      {#each [0, 1, 2, 3, 4, 5] as rowIndex}
+        <tr>
+          {#each [0, 1, 2, 3, 4, 5, 6] as colIndex}
+            {#if monthDates[rowIndex * 7 + colIndex - getFirstDayIndex()]}
+              <td class="heatmap-cell" style="background-color: {getColor(getContributionLevel(monthDates[rowIndex * 7 + colIndex - getFirstDayIndex()]))};"></td>
+            {:else}
+              <td></td>
+            {/if}
+          {/each}
+        </tr>
+      {/each}
     </tbody>
   </table>
 </div>
