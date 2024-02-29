@@ -1,11 +1,12 @@
 <script>
-  import Heatmap from '../lib/components/Heatmap.svelte';
+  import Heatmap from '$lib/components/Heatmap.svelte';
 
-  // Sample contributions data
-  let contributions = [
-    { date: '2024-02-01', level: 'low' },
-    { date: '2024-02-02', level: 'medium' },
+  const contributionData = [
+    { date: new Date('2024-03-02'), color: 'red' },
+    { date: new Date('2024-03-07'), color: 'yellow' },
+    // Add more contribution data as needed
   ];
 </script>
 
-<Heatmap contributions={contributions} />
+<!-- <Heatmap /> -->
+<Heatmap data={contributionData} />
