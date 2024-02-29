@@ -3,7 +3,7 @@
   import HeatmapLegend from './HeatmapLegend.svelte';
   import HeatmapTooltip from './HeatmapTooltip.svelte';
 
-  export let data: { date: Date; color: string }[] = []; // Your contribution data array
+  export let data: { date: Date; color: string }[] = [];
 
   const today = new Date();
   const currentYear = today.getFullYear();
@@ -21,7 +21,7 @@
     }
   }
 
-  // Update colors from contributionData
+  // Update colors from the data prop
   data.forEach(({ date, color }) => {
     const dateString = date.toDateString(); // Convert to string for comparison
     const dayIndex = allDaysOfYear.findIndex(day => day.date.toDateString() === dateString);
@@ -36,13 +36,11 @@
   function handleMouseOver(date: Date) {
     tooltipDate = date;
     tooltipContributions = Math.floor(Math.random() * 10);
-    console.log('mouse hover');
   }
 
   function handleMouseOut() {
     tooltipDate = null;
     tooltipContributions = 0;
-    console.log('mouse out');
   }
 </script>
 

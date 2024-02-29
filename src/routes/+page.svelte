@@ -8,5 +8,4 @@
   ];
 </script>
 
-<!-- <Heatmap /> -->
 <Heatmap data={contributionData} />

@@ -1,4 +1,3 @@
-<!-- HeatmapLegend.svelte -->
 <script lang="ts">
   export let legendItems: { color: string; text: string }[] = [];
 </script>
